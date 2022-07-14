@@ -30,9 +30,14 @@ namespace TheWorryList.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<WorryItem>> GetWorryItem(Guid id)
         {
-            return await _context
-                .WorryItems
-                .FindAsync(id);
+            var result = await Mediator.Send(new Application.Features.WorryItems.Details.Query{Id = id});
+
+            if (!result.IsSuccess)
+            {
+                return NotFound();
+            }
+
+            return Ok(result.Value);
         }
     }
 }
