@@ -14,6 +14,14 @@ namespace TheWorryList.API.Controllers
             _context = context;   
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Create(WorryItem worryItem)
+        {
+            var result = await Mediator.Send(new Application.Features.WorryItems.Create.Command{WorryItem = worryItem});
+
+            return Created("", null);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorryItem>>> GetWorryItems()
         {
