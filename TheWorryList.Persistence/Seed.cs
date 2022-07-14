@@ -25,6 +25,30 @@ namespace TheWorryList.Persistence
                     ThinkingStyle = "Black and white, catastrophising",
                     PositiveResponse = "I have revised hard and am capable of passing",
                     Actions = "Complete my revision and put this into perspective",
+                },
+                new WorryItem
+                {
+                    CreatedDate = DateTime.Now.AddDays(-6),
+                    Situation = "Presentation to give at work",
+                    Emotions = "Anxious and worried",
+                    Thoughts = "What if I freeze and can't talk",
+                    AnxietyLevel = 6,
+                    Beliefs = "I'll lose my job",
+                    ThinkingStyle = "Catastrophising",
+                    PositiveResponse = "I have prepared and practised my presentation, it will be fine",
+                    Actions = "Run through notes and practise in the mirror",
+                },
+                new WorryItem
+                {
+                    CreatedDate = DateTime.Now.AddDays(-1),
+                    Situation = "Panicked in supermarket",
+                    Emotions = "Scared and out of control",
+                    Thoughts = "I can't go there any more, what if it happens again",
+                    AnxietyLevel = 3,
+                    Beliefs = "There must be something wrong with me",
+                    ThinkingStyle = "Self-critical",
+                    PositiveResponse = "I have done this hundreds of times before, just keep calm",
+                    Actions = "Imagine being out and feeling very relaxed and calm",
                 }
                 //add more data
             };
