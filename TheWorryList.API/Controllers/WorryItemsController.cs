@@ -15,11 +15,16 @@ namespace TheWorryList.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<WorryItem>>> GetWorryItems()
+        public async Task<ActionResult<IEnumerable<WorryItem>>> GetWorryItems()
         {
-            return await _context
-                .WorryItems
-                .ToListAsync();
+            var result = await Mediator.Send(new Application.Features.WorryItems.List.Query());
+            
+            if (!result.IsSuccess)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result.Value);
         }
 
         [HttpGet("{id}")]

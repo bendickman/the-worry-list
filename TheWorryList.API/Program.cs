@@ -1,4 +1,7 @@
+using System.Reflection;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using TheWorryList.Application.Features.WorryItems;
 using TheWorryList.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +25,8 @@ builder.Services.AddCors(opt => {
         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
     });
 });
+
+builder.Services.AddMediatR(typeof(List.Handler).Assembly);
 
 var app = builder.Build();
 
