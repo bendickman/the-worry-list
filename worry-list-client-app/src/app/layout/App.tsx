@@ -9,6 +9,7 @@ function App() {
 
   const [worryItems, setWorryItems] = useState<WorryItem[]>([]);
   const [selectedWorryItem, setSelectedWorryItem] = useState<WorryItem | undefined>(undefined);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     axios.get<WorryItem[]>('http://localhost:5000/api/worryitems').then(response => {
@@ -24,15 +25,27 @@ function App() {
     setSelectedWorryItem(undefined);
   }
 
+  function handleFormOpen(id?: string) {
+    id ? handleSelectWorryItem(id) : handleCancelSelectWorryItem();
+    setEditMode(true);
+  }
+
+  function handleFormClose() {
+    setEditMode(false);
+  }
+
   return (
     <Fragment>
-      <NavBar />
+      <NavBar openForm={handleFormOpen} />
       <Container style={{marginTop: '7em'}}>
         <WorryItemDashboard 
         worryItems={worryItems}
         selectedWorryItem={selectedWorryItem}
         selectWorryItem={handleSelectWorryItem}
         cancelSelectWorryItem={handleCancelSelectWorryItem}
+        editMode={editMode}
+        openForm={handleFormOpen}
+        closeForm={handleFormClose}
         />
       </Container>
     </Fragment>

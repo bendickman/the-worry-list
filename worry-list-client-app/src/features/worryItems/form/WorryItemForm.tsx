@@ -1,5 +1,11 @@
 import React from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
+import { WorryItem } from "../../../app/layout/models/worryItem";
+
+interface Props {
+    closeForm: () => void;
+    worryItem: WorryItem | undefined;
+}
 
 const thinkingStyles = [
     {
@@ -14,7 +20,7 @@ const thinkingStyles = [
     }
 ];
 
-export default function WorryItemForm() {
+export default function WorryItemForm({closeForm, worryItem}: Props) {
     return (
         <Segment clearing>
             <Form>
@@ -28,7 +34,7 @@ export default function WorryItemForm() {
                 <Form.TextArea placeholder='actions' />
                 
                 <Button floated='right' positive type='submit' content='Submit' />
-                <Button floated='right' positive type='button' content='Cancel' />
+                <Button onClick={closeForm} floated='right' positive type='button' content='Cancel' />
             </Form>
         </Segment>
     )

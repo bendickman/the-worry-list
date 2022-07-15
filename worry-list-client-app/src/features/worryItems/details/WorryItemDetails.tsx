@@ -5,9 +5,10 @@ import { WorryItem } from "../../../app/layout/models/worryItem";
 interface Props {
     worryItem: WorryItem;
     cancelSelectWorryItem: () => void;
+    openForm: (id: string) => void;
 }
 
-export default function WorryItemDetails({worryItem, cancelSelectWorryItem}: Props) {
+export default function WorryItemDetails({worryItem, cancelSelectWorryItem, openForm}: Props) {
     return (
         <Card fluid>
             <Image src='/assets/categoryImages/travel.jpg' />
@@ -29,7 +30,7 @@ export default function WorryItemDetails({worryItem, cancelSelectWorryItem}: Pro
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths={2}>
-                    <Button basic color='blue' content='Edit' />
+                    <Button onClick={() => openForm(worryItem.id)} basic color='blue' content='Edit' />
                     <Button onClick={cancelSelectWorryItem} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>

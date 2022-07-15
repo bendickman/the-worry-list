@@ -10,10 +10,14 @@ interface Props {
     selectedWorryItem: WorryItem | undefined;
     selectWorryItem: (id: string) => void;
     cancelSelectWorryItem: () => void;
+    editMode: boolean;
+    openForm: (id: string) => void;
+    closeForm: () => void;
 }
 
 export default function WorryItemDashboard(
-    {worryItems, selectedWorryItem, selectWorryItem, cancelSelectWorryItem}: Props) {
+    {worryItems, selectedWorryItem, selectWorryItem, 
+        cancelSelectWorryItem, editMode, openForm, closeForm}: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
@@ -22,9 +26,17 @@ export default function WorryItemDashboard(
             <Grid.Column width='6'>
                 {
                     selectedWorryItem &&
-                    <WorryItemDetails worryItem={selectedWorryItem} cancelSelectWorryItem={cancelSelectWorryItem} />
+                    !editMode && 
+                    <WorryItemDetails 
+                    worryItem={selectedWorryItem} 
+                    cancelSelectWorryItem={cancelSelectWorryItem}
+                    openForm={openForm}
+                    />
                 }
-                <WorryItemForm></WorryItemForm>
+                {
+                    editMode &&
+                    <WorryItemForm closeForm={closeForm} worryItem={selectedWorryItem}></WorryItemForm>
+                }
             </Grid.Column>
 
         </Grid>
