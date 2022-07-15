@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Header, Icon, List } from 'semantic-ui-react';
+import { Container, Header, Icon, List } from 'semantic-ui-react';
 import { WorryItem } from './models/worryItem';
+import NavBar from './NavBar';
+import WorryItemDashboard from '../../features/worryItems/dashboard/WorryItemDashboard';
 
 function App() {
 
@@ -14,21 +16,13 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Header icon as='h2'>
-      <Icon name='users' />
-        Second Header
-        </Header>
-        
-      <List>
-        {
-          worryItems.map(worryItem => (
-            <List.Item key={worryItem.id}>{worryItem.situation} - {worryItem.actions}</List.Item>
-          ))}
-      </List>
-
-    </div>
-  );
+    <Fragment>
+      <NavBar />
+      <Container style={{marginTop: '7em'}}>
+        <WorryItemDashboard worryItems={worryItems}/>
+      </Container>
+    </Fragment>
+  )
 }
 
 export default App;
