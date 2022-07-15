@@ -1,33 +1,13 @@
-using MediatR;
 using Microsoft.EntityFrameworkCore;
-using TheWorryList.Application.Features.WorryItems;
 using TheWorryList.Persistence;
-using TheWorryList.Application.Core;
+using TheWorryList.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-//move thse to their own class
-builder.Services.AddDbContext<DataContext>(opt => 
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    opt.UseSqlite(connectionString);
-});
-
-builder.Services.AddCors(opt => {
-    opt.AddPolicy("CorsPolicy", policy => {
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
-    });
-});
-
-builder.Services.AddMediatR(typeof(List.Handler).Assembly);
-builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 
