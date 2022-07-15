@@ -8,6 +8,7 @@ import WorryItemDashboard from '../../features/worryItems/dashboard/WorryItemDas
 function App() {
 
   const [worryItems, setWorryItems] = useState<WorryItem[]>([]);
+  const [selectedWorryItem, setSelectedWorryItem] = useState<WorryItem | undefined>(undefined);
 
   useEffect(() => {
     axios.get<WorryItem[]>('http://localhost:5000/api/worryitems').then(response => {
@@ -15,11 +16,24 @@ function App() {
     })
   }, []);
 
+  function handleSelectWorryItem(id: string) {
+    setSelectedWorryItem(worryItems.find(wi => wi.id === id));
+  }
+
+  function handleCancelSelectWorryItem() {
+    setSelectedWorryItem(undefined);
+  }
+
   return (
     <Fragment>
       <NavBar />
       <Container style={{marginTop: '7em'}}>
-        <WorryItemDashboard worryItems={worryItems}/>
+        <WorryItemDashboard 
+        worryItems={worryItems}
+        selectedWorryItem={selectedWorryItem}
+        selectWorryItem={handleSelectWorryItem}
+        cancelSelectWorryItem={handleCancelSelectWorryItem}
+        />
       </Container>
     </Fragment>
   )

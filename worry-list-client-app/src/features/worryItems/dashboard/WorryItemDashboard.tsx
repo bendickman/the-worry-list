@@ -7,16 +7,23 @@ import WorryItemForm from '../form/WorryItemForm';
 
 interface Props {
     worryItems: WorryItem[];
+    selectedWorryItem: WorryItem | undefined;
+    selectWorryItem: (id: string) => void;
+    cancelSelectWorryItem: () => void;
 }
 
-export default function WorryItemDashboard({worryItems}: Props) {
+export default function WorryItemDashboard(
+    {worryItems, selectedWorryItem, selectWorryItem, cancelSelectWorryItem}: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
-                <WorryItemList worryItems={worryItems} />
+                <WorryItemList worryItems={worryItems} selectWorryItem={selectWorryItem} />
             </Grid.Column>
             <Grid.Column width='6'>
-                <WorryItemDetails worryItem={worryItems[3]} />
+                {
+                    selectedWorryItem &&
+                    <WorryItemDetails worryItem={selectedWorryItem} cancelSelectWorryItem={cancelSelectWorryItem} />
+                }
                 <WorryItemForm></WorryItemForm>
             </Grid.Column>
 

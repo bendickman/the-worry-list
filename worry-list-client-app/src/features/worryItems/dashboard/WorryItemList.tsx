@@ -4,9 +4,10 @@ import { WorryItem } from "../../../app/layout/models/worryItem";
 
 interface Props {
     worryItems: WorryItem[];
+    selectWorryItem: (id: string) => void;
 }
 
-export default function WorryItemList({worryItems}: Props) {
+export default function WorryItemList({worryItems, selectWorryItem}: Props) {
     return (
             <Segment>
                 <Item.Group divided>
@@ -20,7 +21,7 @@ export default function WorryItemList({worryItems}: Props) {
                                     <div>{worryItem.thoughts}</div>
                                 </Item.Description>
                                 <Item.Extra>
-                                    <Button floated='right' content='View' color='blue' />
+                                    <Button onClick={() => selectWorryItem(worryItem.id)} floated='right' content='View' color='blue' />
                                     <Label basic content={worryItem.anxietyLevel} />
                                 </Item.Extra>
                             </Item.Content>
