@@ -1,8 +1,8 @@
-using System.Reflection;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TheWorryList.Application.Features.WorryItems;
 using TheWorryList.Persistence;
+using TheWorryList.Application.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,7 @@ builder.Services.AddCors(opt => {
 });
 
 builder.Services.AddMediatR(typeof(List.Handler).Assembly);
+builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
 var app = builder.Build();
 

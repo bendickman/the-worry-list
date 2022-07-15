@@ -14,6 +14,23 @@ namespace TheWorryList.API.Controllers
             _context = context;   
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await Mediator.Send(new Application.Features.WorryItems.Delete.Command{Id = id});
+
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(Guid id, WorryItem worryItem)
+        {
+            worryItem.Id = id;
+            var result = await Mediator.Send(new Application.Features.WorryItems.Update.Command{WorryItem = worryItem});
+
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<ActionResult> Create(WorryItem worryItem)
         {
