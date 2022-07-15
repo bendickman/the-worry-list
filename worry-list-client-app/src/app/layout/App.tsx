@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import axios from 'axios';
 import { Header, Icon, List } from 'semantic-ui-react';
+import { WorryItem } from './models/worryItem';
 
 function App() {
 
-  const [worryItems, setWorryItems] = useState([]);
+  const [worryItems, setWorryItems] = useState<WorryItem[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/worryitems').then(response => {
+    axios.get<WorryItem[]>('http://localhost:5000/api/worryitems').then(response => {
       setWorryItems(response.data);
     })
   }, []);
@@ -23,8 +22,8 @@ function App() {
         
       <List>
         {
-          worryItems.map((worryItem: any) => (
-            <List.Item key={worryItem.id}>{worryItem.situation}</List.Item>
+          worryItems.map(worryItem => (
+            <List.Item key={worryItem.id}>{worryItem.situation} - {worryItem.actions}</List.Item>
           ))}
       </List>
 
