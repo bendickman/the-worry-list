@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, List } from 'semantic-ui-react';
+import { Grid } from 'semantic-ui-react';
 import { WorryItem } from '../../../app/layout/models/worryItem';
 import WorryItemDetails from '../details/WorryItemDetails';
 import WorryItemList from './WorryItemList';
@@ -13,15 +13,21 @@ interface Props {
     editMode: boolean;
     openForm: (id: string) => void;
     closeForm: () => void;
+    upsertWorryItem: (worryItem: WorryItem) => void;
+    deleteWorryItem: (id: string) => void;
 }
 
 export default function WorryItemDashboard(
     {worryItems, selectedWorryItem, selectWorryItem, 
-        cancelSelectWorryItem, editMode, openForm, closeForm}: Props) {
+        cancelSelectWorryItem, editMode, openForm, 
+        closeForm, upsertWorryItem, deleteWorryItem}: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
-                <WorryItemList worryItems={worryItems} selectWorryItem={selectWorryItem} />
+                <WorryItemList 
+                worryItems={worryItems} 
+                selectWorryItem={selectWorryItem}
+                deleteWorryItem={deleteWorryItem} />
             </Grid.Column>
             <Grid.Column width='6'>
                 {
@@ -35,7 +41,10 @@ export default function WorryItemDashboard(
                 }
                 {
                     editMode &&
-                    <WorryItemForm closeForm={closeForm} worryItem={selectedWorryItem}></WorryItemForm>
+                    <WorryItemForm 
+                    closeForm={closeForm} 
+                    worryItem={selectedWorryItem} 
+                    upsertWorryItem={upsertWorryItem}></WorryItemForm>
                 }
             </Grid.Column>
 

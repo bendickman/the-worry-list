@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Icon, Image } from "semantic-ui-react";
+import { Button, Card, Image } from "semantic-ui-react";
 import { WorryItem } from "../../../app/layout/models/worryItem";
 
 interface Props {
@@ -15,7 +15,7 @@ export default function WorryItemDetails({worryItem, cancelSelectWorryItem, open
             <Card.Content>
             <Card.Header>{worryItem.situation}</Card.Header>
             <Card.Meta>
-                <span>{worryItem.createdDate.toString()}</span>
+                <span>{worryItem?.createdDate?.toString()}</span>
             </Card.Meta>
             <Card.Description>
                 <div>Anxiety Level: {worryItem.anxietyLevel}</div>

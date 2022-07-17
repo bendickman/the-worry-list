@@ -1,9 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Header, Icon, List } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import { WorryItem } from './models/worryItem';
 import NavBar from './NavBar';
 import WorryItemDashboard from '../../features/worryItems/dashboard/WorryItemDashboard';
+import {v4 as uuid} from 'uuid';
 
 function App() {
 
@@ -34,6 +35,22 @@ function App() {
     setEditMode(false);
   }
 
+  function handleUpsertWorryItem(worryItem: WorryItem) {
+    worryItem.id ?
+      setWorryItems([...worryItems.filter(wi => wi.id !== worryItem.id), {...worryItem, modifiedDate: new Date()}])
+      : setWorryItems([...worryItems, {...worryItem, id: uuid(), createdDate: new Date()}]);
+
+      worryItem.id ? worryItem.modifiedDate = new Date()
+        : worryItem.createdDate = new Date();
+
+      setEditMode(false);
+      setSelectedWorryItem(worryItem);
+  }
+
+  function handleDeleteWorryItem(id: string) {
+    setWorryItems([...worryItems.filter(wi => wi.id !== id)]);
+  }
+
   return (
     <Fragment>
       <NavBar openForm={handleFormOpen} />
@@ -46,6 +63,8 @@ function App() {
         editMode={editMode}
         openForm={handleFormOpen}
         closeForm={handleFormClose}
+        upsertWorryItem={handleUpsertWorryItem}
+        deleteWorryItem={handleDeleteWorryItem}
         />
       </Container>
     </Fragment>
