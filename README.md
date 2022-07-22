@@ -14,11 +14,11 @@ The architecture approach for this application has taken inspiration from Jason 
 
 Web API targeting .NET Core 6 that provides all the endpoints of the application (details to follow)
 
-#### TheWorryList.Application
+### TheWorryList.Application
 
 Feature implementation using MediatR
 
-#### TheWorryList.Domain
+### TheWorryList.Domain
 
 Domain entities used throughout the application
 
