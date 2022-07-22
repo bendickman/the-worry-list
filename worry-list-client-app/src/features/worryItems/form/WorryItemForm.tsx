@@ -6,6 +6,7 @@ interface Props {
     closeForm: () => void;
     worryItem: WorryItem | undefined;
     upsertWorryItem: (worryItem: WorryItem) => void;
+    submitting: boolean;
 }
 
 const thinkingStyles = [
@@ -21,7 +22,7 @@ const thinkingStyles = [
     }
 ];
 
-export default function WorryItemForm({closeForm, worryItem : selectedWorryItem, upsertWorryItem}: Props) {
+export default function WorryItemForm({closeForm, worryItem : selectedWorryItem, upsertWorryItem, submitting}: Props) {
 
     const initialState = selectedWorryItem ?? {
         id: '',
@@ -63,7 +64,7 @@ export default function WorryItemForm({closeForm, worryItem : selectedWorryItem,
                 <Form.TextArea placeholder='positive response' value={worryItem.positiveResponse} name='positiveResponse' onChange={handleInputChange} />
                 <Form.TextArea placeholder='actions' value={worryItem.actions} name='actions' onChange={handleInputChange} />
                 
-                <Button floated='right' positive type='submit' content='Submit' />
+                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
                 <Button onClick={closeForm} floated='right' positive type='button' content='Cancel' />
             </Form>
         </Segment>

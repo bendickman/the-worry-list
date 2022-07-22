@@ -14,6 +14,7 @@ function App() {
   const [selectedWorryItem, setSelectedWorryItem] = useState<WorryItem | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     agent.WorryItems.list().then(response => {
@@ -49,15 +50,24 @@ function App() {
   }
 
   function handleUpsertWorryItem(worryItem: WorryItem) {
-    worryItem.id ?
-      setWorryItems([...worryItems.filter(wi => wi.id !== worryItem.id), {...worryItem, modifiedDate: new Date()}])
-      : setWorryItems([...worryItems, {...worryItem, id: uuid(), createdDate: new Date()}]);
+    setSubmitting(true);
 
-      worryItem.id ? worryItem.modifiedDate = new Date()
-        : worryItem.createdDate = new Date();
-
-      setEditMode(false);
-      setSelectedWorryItem(worryItem);
+    if (worryItem.id) {
+          agent.WorryItems.update(worryItem).then(() => {
+            setWorryItems([...worryItems.filter(wi => wi.id !== worryItem.id), {...worryItem, modifiedDate: new Date()}])
+            setSelectedWorryItem(worryItem);
+            setEditMode(false);
+            setSubmitting(false);
+      })
+    } else {
+          worryItem.id = uuid();
+          agent.WorryItems.create(worryItem).then(() => {
+            setWorryItems([...worryItems, worryItem])
+            setSelectedWorryItem(worryItem);
+            setEditMode(false);
+            setSubmitting(false);
+      })
+    }
   }
 
   function handleDeleteWorryItem(id: string) {
@@ -80,6 +90,7 @@ function App() {
         closeForm={handleFormClose}
         upsertWorryItem={handleUpsertWorryItem}
         deleteWorryItem={handleDeleteWorryItem}
+        submitting={submitting}
         />
       </Container>
     </Fragment>

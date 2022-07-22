@@ -15,12 +15,14 @@ interface Props {
     closeForm: () => void;
     upsertWorryItem: (worryItem: WorryItem) => void;
     deleteWorryItem: (id: string) => void;
+    submitting: boolean;
 }
 
 export default function WorryItemDashboard(
     {worryItems, selectedWorryItem, selectWorryItem, 
         cancelSelectWorryItem, editMode, openForm, 
-        closeForm, upsertWorryItem, deleteWorryItem}: Props) {
+        closeForm, upsertWorryItem, deleteWorryItem,
+        submitting}: Props) {
     return (
         <Grid>
             <Grid.Column width='10'>
@@ -44,7 +46,8 @@ export default function WorryItemDashboard(
                     <WorryItemForm 
                     closeForm={closeForm} 
                     worryItem={selectedWorryItem} 
-                    upsertWorryItem={upsertWorryItem}></WorryItemForm>
+                    upsertWorryItem={upsertWorryItem}
+                    submitting={submitting}></WorryItemForm>
                 }
             </Grid.Column>
 

@@ -30,7 +30,11 @@ const requests = {
 };
 
 const WorryItems = {
-    list: <T>() => requests.get<WorryItem[]>('/worryitems')
+    list: <T>() => requests.get<WorryItem[]>('/worryitems'),
+    details: (id: string) => requests.get<WorryItem>(`/worryitems/${id}`),
+    create: (worryItem: WorryItem) => requests.post<void>('/worryitems', worryItem),
+    update: (worryItem: WorryItem) => requests.put<void>(`/worryitems/${worryItem.id}`, worryItem),
+    delete: (id: string) => requests.del<void>(`/worryitems/${id}`),
 };
 
 const agent = {
