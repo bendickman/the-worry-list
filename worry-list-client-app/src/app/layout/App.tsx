@@ -5,6 +5,7 @@ import { WorryItem } from './models/worryItem';
 import NavBar from './NavBar';
 import WorryItemDashboard from '../../features/worryItems/dashboard/WorryItemDashboard';
 import {v4 as uuid} from 'uuid';
+import agent from '../api/agent';
 
 function App() {
 
@@ -13,8 +14,18 @@ function App() {
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    axios.get<WorryItem[]>('http://localhost:5000/api/worryitems').then(response => {
-      setWorryItems(response.data);
+    agent.WorryItems.list().then(response => {
+      const worryItem: WorryItem[] = [];
+
+      response.forEach(wi => {
+        if (wi.createdDate) {
+          wi.createdDate.setHours(0,0,0,0);
+          worryItems.push(wi);
+        }
+        
+      })
+
+      setWorryItems(response);
     })
   }, []);
 
