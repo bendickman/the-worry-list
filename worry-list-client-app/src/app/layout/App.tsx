@@ -6,12 +6,14 @@ import NavBar from './NavBar';
 import WorryItemDashboard from '../../features/worryItems/dashboard/WorryItemDashboard';
 import {v4 as uuid} from 'uuid';
 import agent from '../api/agent';
+import LoaderComponent from './LoaderComponent';
 
 function App() {
 
   const [worryItems, setWorryItems] = useState<WorryItem[]>([]);
   const [selectedWorryItem, setSelectedWorryItem] = useState<WorryItem | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     agent.WorryItems.list().then(response => {
@@ -19,13 +21,13 @@ function App() {
 
       response.forEach(wi => {
         if (wi.createdDate) {
-          wi.createdDate.setHours(0,0,0,0);
+          //wi.createdDate.setHours(0,0,0,0);
           worryItems.push(wi);
         }
         
       })
-
       setWorryItems(response);
+      setLoading(false);
     })
   }, []);
 
@@ -62,6 +64,8 @@ function App() {
     setWorryItems([...worryItems.filter(wi => wi.id !== id)]);
   }
 
+  if (loading) return <LoaderComponent />
+  
   return (
     <Fragment>
       <NavBar openForm={handleFormOpen} />
