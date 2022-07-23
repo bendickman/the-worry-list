@@ -29,7 +29,8 @@ export default function WorryItemDashboard(
                 <WorryItemList 
                 worryItems={worryItems} 
                 selectWorryItem={selectWorryItem}
-                deleteWorryItem={deleteWorryItem} />
+                deleteWorryItem={deleteWorryItem}
+                submitting={submitting} />
             </Grid.Column>
             <Grid.Column width='6'>
                 {

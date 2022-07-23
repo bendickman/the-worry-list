@@ -71,7 +71,12 @@ function App() {
   }
 
   function handleDeleteWorryItem(id: string) {
-    setWorryItems([...worryItems.filter(wi => wi.id !== id)]);
+    setSubmitting(true);
+    agent.WorryItems.delete(id).then(() => {
+      setWorryItems([...worryItems.filter(wi => wi.id !== id)]);
+      setSubmitting(false);
+    })
+    
   }
 
   if (loading) return <LoaderComponent />
