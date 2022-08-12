@@ -1,13 +1,7 @@
+import { observer } from "mobx-react-lite";
 import React, { ChangeEvent, useState } from "react";
 import { Button, Form, Segment } from "semantic-ui-react";
-import { WorryItem } from "../../../app/layout/models/worryItem";
-
-interface Props {
-    closeForm: () => void;
-    worryItem: WorryItem | undefined;
-    upsertWorryItem: (worryItem: WorryItem) => void;
-    submitting: boolean;
-}
+import { useStore } from "../../../app/stores/store";
 
 const thinkingStyles = [
     {
@@ -22,8 +16,10 @@ const thinkingStyles = [
     }
 ];
 
-export default function WorryItemForm({closeForm, worryItem : selectedWorryItem, upsertWorryItem, submitting}: Props) {
+export default observer(function WorryItemForm() {
 
+    const {worryItemStore} = useStore();
+    const {selectedWorryItem, closeUpsertForm, createWorryItem, updateWorryItem, loading} = worryItemStore;
     const initialState = selectedWorryItem ?? {
         id: '',
         createdDate: undefined,
@@ -43,7 +39,7 @@ export default function WorryItemForm({closeForm, worryItem : selectedWorryItem,
     const [worryItem, setWorryItem] = useState(initialState);
 
     function handleSubmit() {
-        upsertWorryItem(worryItem);
+        worryItem.id ? updateWorryItem(worryItem) : createWorryItem(worryItem);
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -64,9 +60,9 @@ export default function WorryItemForm({closeForm, worryItem : selectedWorryItem,
                 <Form.TextArea placeholder='positive response' value={worryItem.positiveResponse} name='positiveResponse' onChange={handleInputChange} />
                 <Form.TextArea placeholder='actions' value={worryItem.actions} name='actions' onChange={handleInputChange} />
                 
-                <Button loading={submitting} floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeForm} floated='right' positive type='button' content='Cancel' />
+                <Button loading={loading} floated='right' positive type='submit' content='Submit' />
+                <Button onClick={closeUpsertForm} floated='right' positive type='button' content='Cancel' />
             </Form>
         </Segment>
     )
-}
+})

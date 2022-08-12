@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, Card, Image } from "semantic-ui-react";
-import { WorryItem } from "../../../app/layout/models/worryItem";
+import LoaderComponent from "../../../app/layout/LoaderComponent";
+import { useStore } from "../../../app/stores/store";
 
-interface Props {
-    worryItem: WorryItem;
-    cancelSelectWorryItem: () => void;
-    openForm: (id: string) => void;
-}
+export default function WorryItemDetails() {
+    const {worryItemStore} = useStore();
+    const {selectedWorryItem: worryItem, openUpsertForm, cancelSelectedWorryItem} = worryItemStore;
 
-export default function WorryItemDetails({worryItem, cancelSelectWorryItem, openForm}: Props) {
+    if (!worryItem) return <LoaderComponent />
+
     return (
         <Card fluid>
             <Image src='/assets/categoryImages/travel.jpg' />
@@ -30,8 +30,8 @@ export default function WorryItemDetails({worryItem, cancelSelectWorryItem, open
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths={2}>
-                    <Button onClick={() => openForm(worryItem.id)} basic color='blue' content='Edit' />
-                    <Button onClick={cancelSelectWorryItem} basic color='grey' content='Cancel' />
+                    <Button onClick={() => openUpsertForm(worryItem.id)} basic color='blue' content='Edit' />
+                    <Button onClick={() => cancelSelectedWorryItem()} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
