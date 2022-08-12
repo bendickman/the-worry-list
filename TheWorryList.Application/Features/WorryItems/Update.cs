@@ -33,6 +33,7 @@ namespace TheWorryList.Application.Features.WorryItems
                     return Unit.Value;
                 }
 
+                worryItem.ModifiedDate = DateTime.UtcNow;
                 _mapper.Map(request.WorryItem, worryItem);
 
                 await _context.SaveChangesAsync();
