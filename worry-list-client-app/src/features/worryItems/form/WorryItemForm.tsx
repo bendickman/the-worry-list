@@ -29,8 +29,8 @@ export default observer(function WorryItemForm() {
 
     const [worryItem, setWorryItem] = useState({
         id: '',
-        //createdDate: undefined, TODO - figure these dates out!
-        //modifiedDate: undefined,
+        createdDate: new Date(),
+        modifiedDate: new Date(),
         isComplete: false,
         isDeleted: false,
         situation: '',

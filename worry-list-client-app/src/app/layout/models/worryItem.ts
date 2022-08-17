@@ -1,7 +1,7 @@
 export interface WorryItem {
     id: string;
-    createdDate?: Date;
-    modifiedDate?: Date;
+    createdDate: Date;
+    modifiedDate: Date;
     isComplete: boolean;
     isDeleted: boolean;
     situation: string;
