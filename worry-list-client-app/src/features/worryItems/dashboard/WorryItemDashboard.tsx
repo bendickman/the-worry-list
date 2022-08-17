@@ -1,29 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
-import WorryItemDetails from '../details/WorryItemDetails';
 import WorryItemList from './WorryItemList';
-import WorryItemForm from '../form/WorryItemForm';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
-
+import LoaderComponent from '../../../app/layout/LoaderComponent';
 
 export default observer(function WorryItemDashboard() {
     const {worryItemStore} = useStore();
-    const {selectedWorryItem, editMode} = worryItemStore;
+    const {loadWorryItems, worryItemsRegistry} = worryItemStore;
+
+    useEffect(() => {
+        if (worryItemsRegistry.size <= 1) loadWorryItems(); 
+    }, [worryItemsRegistry.size, loadWorryItems]);
+
+    if (worryItemStore.loadingInitial) return <LoaderComponent content='Loading app...' />
+
     return (
         <Grid>
             <Grid.Column width='10'>
                 <WorryItemList />
             </Grid.Column>
             <Grid.Column width='6'>
-                {
-                    selectedWorryItem && !editMode && 
-                    <WorryItemDetails />
-                }
-                {
-                    editMode &&
-                    <WorryItemForm />
-                }
+                <h2>Worry Item Filters here...</h2>
             </Grid.Column>
         </Grid>
     )

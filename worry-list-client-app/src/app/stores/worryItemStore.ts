@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
 import { WorryItem } from "../layout/models/worryItem";
-import { v4 as uuid } from 'uuid';
 
 export default class WorryItemStore {
     worryItemsRegistry = new Map<string, WorryItem>();
@@ -20,14 +19,11 @@ export default class WorryItemStore {
     }
 
     loadWorryItems = async () => {
-
+        this.loadingInitial = true;
         try {
             const worryItems = await agent.WorryItems.list();
             worryItems.forEach(worryItem => {
-                if (worryItem.createdDate) {
-                    //mutating state is mobx is allowed, not in Redux
-                    this.worryItemsRegistry.set(worryItem.id, worryItem);
-                }
+                    this.setWorryItem(worryItem);
                 })
                 this.setLoadingInitial(false);
         } catch(error) {
@@ -48,26 +44,8 @@ export default class WorryItemStore {
         this.editMode = state;
     }
 
-    selectWorryItem = (id: string) => {
-        this.selectedWorryItem = this.worryItemsRegistry.get(id);
-    }
-
-    cancelSelectedWorryItem = () => {
-        this.selectedWorryItem = undefined;
-    }
-
-    openUpsertForm = (id?: string) => {
-        id ? this.selectWorryItem(id) : this.cancelSelectedWorryItem();
-        this.setEditMode(true);
-    }
-
-    closeUpsertForm = () => {
-        this.setEditMode(false);
-    }
-
     createWorryItem = async (worryItem: WorryItem) => {
         this.setLoading(true);
-        worryItem.id = uuid();
 
         try {
             await agent.WorryItems.create(worryItem);
@@ -111,7 +89,6 @@ export default class WorryItemStore {
             await agent.WorryItems.delete(id);
             runInAction(() => {
                 this.worryItemsRegistry.delete(id);
-                if (this.selectedWorryItem?.id === id) this.cancelSelectedWorryItem();
                 this.setLoading(false);
             })
         } catch (error) {
@@ -119,6 +96,41 @@ export default class WorryItemStore {
             runInAction(() => {
                 this.setLoading(false);
             })
+        }
+    }
+
+    loadWorryItem = async (id: string) => {
+        let worryItem = this.getWorryItem(id);
+
+        if (worryItem) {
+            this.selectedWorryItem = worryItem;
+            return worryItem;
+        } else {
+            this.setLoadingInitial(true);
+            try {
+                worryItem = await agent.WorryItems.details(id);
+                this.setWorryItem(worryItem);
+                runInAction(() => {
+                    this.selectedWorryItem = worryItem;
+                })
+                this.setLoadingInitial(false);
+                return worryItem;
+            } catch (error) {
+                console.log(error);
+                this.setLoadingInitial(false);
+            }
+        }
+    }
+
+    private getWorryItem = (id: string) => {
+        return this.worryItemsRegistry.get(id);
+    }
+
+    private setWorryItem = (worryItem: WorryItem) => {
+        //TODO - ensure the createdDate is set correctly, this logic should be removed
+        if (worryItem.createdDate) {
+            //mutating state is mobx is allowed, not in Redux
+            this.worryItemsRegistry.set(worryItem.id, worryItem);
         }
     }
 }

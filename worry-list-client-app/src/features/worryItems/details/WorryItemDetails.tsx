@@ -1,13 +1,21 @@
-import React from "react";
+import { observer } from "mobx-react-lite";
+import React, { useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Button, Card, Image } from "semantic-ui-react";
 import LoaderComponent from "../../../app/layout/LoaderComponent";
 import { useStore } from "../../../app/stores/store";
 
-export default function WorryItemDetails() {
+export default observer(function WorryItemDetails() {
     const {worryItemStore} = useStore();
-    const {selectedWorryItem: worryItem, openUpsertForm, cancelSelectedWorryItem} = worryItemStore;
+    const {selectedWorryItem: worryItem, loadWorryItem, loadingInitial} = worryItemStore;
 
-    if (!worryItem) return <LoaderComponent />
+    const {id} = useParams<{id: string}>();
+
+    useEffect(() => {
+        if (id) loadWorryItem(id);
+    }, [id, loadWorryItem])
+
+    if (loadingInitial || !worryItem) return <LoaderComponent />
 
     return (
         <Card fluid>
@@ -30,10 +38,10 @@ export default function WorryItemDetails() {
             </Card.Content>
             <Card.Content extra>
                 <Button.Group widths={2}>
-                    <Button onClick={() => openUpsertForm(worryItem.id)} basic color='blue' content='Edit' />
-                    <Button onClick={() => cancelSelectedWorryItem()} basic color='grey' content='Cancel' />
+                    <Button as={Link} to={`/manage/${worryItem.id}`} basic color='blue' content='Edit' />
+                    <Button as={Link} to={'/my-worry-list'} basic color='grey' content='Cancel' />
                 </Button.Group>
             </Card.Content>
         </Card>
     )
-}
+})

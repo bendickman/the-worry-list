@@ -1,7 +1,10 @@
 import { observer } from "mobx-react-lite";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
+import LoaderComponent from "../../../app/layout/LoaderComponent";
 import { useStore } from "../../../app/stores/store";
+import { v4 as uuid } from 'uuid';
 
 const thinkingStyles = [
     {
@@ -19,11 +22,15 @@ const thinkingStyles = [
 export default observer(function WorryItemForm() {
 
     const {worryItemStore} = useStore();
-    const {selectedWorryItem, closeUpsertForm, createWorryItem, updateWorryItem, loading} = worryItemStore;
-    const initialState = selectedWorryItem ?? {
+    const {selectedWorryItem, createWorryItem, updateWorryItem, 
+            loadWorryItem, loading, loadingInitial} = worryItemStore;
+    const {id} = useParams<{id: string}>();
+    const history = useHistory();
+
+    const [worryItem, setWorryItem] = useState({
         id: '',
-        createdDate: undefined,
-        modifiedDate: undefined,
+        //createdDate: undefined, TODO - figure these dates out!
+        //modifiedDate: undefined,
         isComplete: false,
         isDeleted: false,
         situation: '',
@@ -34,12 +41,30 @@ export default observer(function WorryItemForm() {
         thinkingStyle: '',
         positiveResponse: '',
         actions: '',
-    }
+    });
 
-    const [worryItem, setWorryItem] = useState(initialState);
+    useEffect(() => {
+        if (id) { 
+            loadWorryItem(id).then(worryItem => {
+                setWorryItem(worryItem!);
+            });
+        }
+    }, [id, loadWorryItem])
 
     function handleSubmit() {
-        worryItem.id ? updateWorryItem(worryItem) : createWorryItem(worryItem);
+        if (worryItem.id.length === 0) {
+            let newWorryItem = {
+                ...worryItem,
+                id: uuid(),
+            }
+            createWorryItem(newWorryItem).then(() => {
+                history.push(`/my-worry-list/${newWorryItem.id}`)
+            })
+        } else {
+            updateWorryItem(worryItem).then(() => {
+                history.push(`/my-worry-list/${worryItem.id}`)
+            })
+        }
     }
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
@@ -47,6 +72,8 @@ export default observer(function WorryItemForm() {
 
         setWorryItem({...worryItem, [name]: value});
     }
+
+    if (loadingInitial) return <LoaderComponent content="Loading worry item..." />
 
     return (
         <Segment clearing>
@@ -61,7 +88,7 @@ export default observer(function WorryItemForm() {
                 <Form.TextArea placeholder='actions' value={worryItem.actions} name='actions' onChange={handleInputChange} />
                 
                 <Button loading={loading} floated='right' positive type='submit' content='Submit' />
-                <Button onClick={closeUpsertForm} floated='right' positive type='button' content='Cancel' />
+                <Button as={Link} to={'/my-worry-list'} floated='right' type='button' content='Cancel' />
             </Form>
         </Segment>
     )
