@@ -14,8 +14,19 @@ export default class WorryItemStore {
     }
 
     get worryItemsByCreatedDate() {
-        //TODO - add sort logic
-        return Array.from(this.worryItemsRegistry.values());
+        return Array.from(this.worryItemsRegistry.values()).sort((a, b) =>
+            new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+        );
+    }
+
+    get groupedWorryItems() {
+        return Object.entries(
+            this.worryItemsByCreatedDate.reduce((worryItems, worryItem) => {
+                const date =  new Date(worryItem.createdDate).toDateString();
+                worryItems[date] = worryItems[date] ? [...worryItems[date], worryItem] : [worryItem];
+                return worryItems;
+            }, {} as {[key: string] : WorryItem[]})
+        )
     }
 
     loadWorryItems = async () => {
@@ -128,9 +139,9 @@ export default class WorryItemStore {
 
     private setWorryItem = (worryItem: WorryItem) => {
         //TODO - ensure the createdDate is set correctly, this logic should be removed
-        if (worryItem.createdDate) {
+        //if (worryItem.createdDate) {
             //mutating state is mobx is allowed, not in Redux
             this.worryItemsRegistry.set(worryItem.id, worryItem);
-        }
+        //}
     }
 }

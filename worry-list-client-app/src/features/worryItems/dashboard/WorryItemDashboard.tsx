@@ -4,6 +4,7 @@ import WorryItemList from './WorryItemList';
 import { useStore } from '../../../app/stores/store';
 import { observer } from 'mobx-react-lite';
 import LoaderComponent from '../../../app/layout/LoaderComponent';
+import WorryItemListFilters from './WorryItemsListFilters';
 
 export default observer(function WorryItemDashboard() {
     const {worryItemStore} = useStore();
@@ -21,7 +22,7 @@ export default observer(function WorryItemDashboard() {
                 <WorryItemList />
             </Grid.Column>
             <Grid.Column width='6'>
-                <h2>Worry Item Filters here...</h2>
+                <WorryItemListFilters />
             </Grid.Column>
         </Grid>
     )
