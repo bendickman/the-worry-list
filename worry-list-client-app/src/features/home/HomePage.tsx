@@ -7,7 +7,7 @@ export default function HomePage() {
         <Segment inverted textAlign='center' vertical className='masthead'>
             <Container text>
                 <Header as='h1' inverted>
-                    <Image src='/assets/logo.png' alt='the worry list logo' style={{marginBottom: 12}}></Image>
+                    <Image src='/assets/list.png' alt='the worry list logo' style={{marginBottom: 12}}></Image>
                     The Worry List
                 </Header>
                 <Header as='h2' inverted content='Welcome to The Worry List'></Header>

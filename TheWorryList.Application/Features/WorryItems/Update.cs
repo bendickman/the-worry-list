@@ -1,5 +1,7 @@
 using AutoMapper;
+using FluentValidation;
 using MediatR;
+using TheWorryList.Application.Core;
 using TheWorryList.Domain;
 using TheWorryList.Persistence;
 
@@ -7,12 +9,20 @@ namespace TheWorryList.Application.Features.WorryItems
 {
     public class Update
     {
-        public class Command : IRequest 
+        public class Command : IRequest<Result<Unit>>
         {
             public WorryItem WorryItem { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class CreateValidator : AbstractValidator<Command>
+        {
+            public CreateValidator()
+            {
+                RuleFor(wi => wi.WorryItem).SetValidator(new WorryItemValidator());
+            }
+        }
+
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
@@ -24,21 +34,20 @@ namespace TheWorryList.Application.Features.WorryItems
                 _context = context;
                 _mapper = mapper;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var worryItem = await _context.WorryItems.FindAsync(request.WorryItem.Id);
 
-                if (worryItem is null)
-                {
-                    return Unit.Value;
-                }
+                if (worryItem is null) return null;
 
                 worryItem.ModifiedDate = DateTime.UtcNow;
                 _mapper.Map(request.WorryItem, worryItem);
 
-                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync() > 0;
 
-                return Unit.Value;
+                if (!result) return Result<Unit>.Failure("Failed to update worry item");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

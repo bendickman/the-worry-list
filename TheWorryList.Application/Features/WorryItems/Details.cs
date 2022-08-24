@@ -30,11 +30,6 @@ namespace TheWorryList.Application.Features.WorryItems
                 .WorryItems
                 .FindAsync(request.Id);
 
-                if (worryItem is null)
-                {
-                    return Result<WorryItem>.Failure("Not found");
-                }
-
                 return Result<WorryItem>.Success(worryItem);
             }
         }
