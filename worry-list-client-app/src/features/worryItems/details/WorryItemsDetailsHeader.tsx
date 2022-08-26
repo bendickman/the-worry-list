@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
+import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
 import { WorryItem } from '../../../app/layout/models/worryItem';
 
@@ -46,7 +47,7 @@ export default observer (function WorryItemDetailsHeader({worryItem}: Props) {
             <Segment clearing attached='bottom'>
                 <Button color='teal'>Mark as complete</Button>
                 <Button>Mark as incomplete</Button>
-                <Button color='orange' floated='right'>
+                <Button as={Link} to={`/manage/${worryItem.id}`} color='orange' floated='right'>
                     Manage Worry Item
                 </Button>
             </Segment>
