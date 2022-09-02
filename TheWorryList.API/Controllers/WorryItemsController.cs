@@ -1,19 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TheWorryList.Domain;
-using TheWorryList.Persistence;
 
 namespace TheWorryList.API.Controllers
 {
     public class WorryItemsController : BaseApiController
     {
-        private readonly DataContext _context;
-        
-        public WorryItemsController(DataContext context)
-        {
-            _context = context;   
-        }
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

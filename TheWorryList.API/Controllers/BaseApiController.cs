@@ -16,12 +16,24 @@ namespace TheWorryList.API.Controllers
 
         protected ActionResult HandleResult<T>(Result<T> result)
         {
-            if (result == null) return NotFound();
+            if (result is null) 
+                return NotFound();
+
             if (result.IsSuccess && result.Value != null)
                 return Ok(result.Value);
-            if (result.IsSuccess && result.Value == null)
+
+            if (result.IsSuccess && result.Value is null)
                 return NotFound();
+
             return BadRequest(result.Error);
+        }
+
+        protected ActionResult HandleIdentityResult<T>(Result<T> result)
+        {
+            if (result.IsSuccess && result.Value != null) 
+                return Ok(result.Value);
+
+            return Unauthorized();
         }
     }
 }
