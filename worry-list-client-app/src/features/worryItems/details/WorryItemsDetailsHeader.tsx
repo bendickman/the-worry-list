@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react'
 import { Link } from 'react-router-dom';
 import {Button, Header, Item, Segment, Image} from 'semantic-ui-react'
-import { WorryItem } from '../../../app/layout/models/worryItem';
+import { IWorryItem } from '../../../app/layout/models/worryItem';
 
 const worryItemImageStyle = {
     filter: 'brightness(30%)'
@@ -18,7 +18,7 @@ const worryItemImageTextStyle = {
 };
 
 interface Props {
-    worryItem: WorryItem;
+    worryItem: IWorryItem;
 }
 
 export default observer (function WorryItemDetailsHeader({worryItem}: Props) {

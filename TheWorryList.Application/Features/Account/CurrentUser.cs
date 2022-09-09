@@ -42,7 +42,7 @@ namespace TheWorryList.Application.Features.Account
                 var userDto = new UserDto
                 {
                     DisplayName = user.DisplayName,
-                    Username = user.UserName,
+                    UserName = user.UserName,
                     Token = token,
                     ProfileImage = "",
                 };

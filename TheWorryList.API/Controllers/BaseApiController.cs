@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using TheWorryList.Application.Core;
 
 namespace TheWorryList.API.Controllers
@@ -25,7 +26,7 @@ namespace TheWorryList.API.Controllers
             if (result.IsSuccess && result.Value is null)
                 return NotFound();
 
-            return BadRequest(result.Error);
+            return BadRequest();
         }
 
         protected ActionResult HandleIdentityResult<T>(Result<T> result)
@@ -33,7 +34,24 @@ namespace TheWorryList.API.Controllers
             if (result.IsSuccess && result.Value != null) 
                 return Ok(result.Value);
 
-            return Unauthorized();
+            if (result.IsUnauthorised)
+                return Unauthorized();
+
+            AddModelStateErrors(result.Error, ModelState);
+            return ValidationProblem(ModelState);
+        }
+
+        private void AddModelStateErrors(
+            KeyValuePair<string, string> error,
+            ModelStateDictionary modelState)
+        {
+            if (string.IsNullOrEmpty(error.Key) ||
+                    string.IsNullOrEmpty(error.Value))
+            {
+                return;
+            }
+
+            modelState.AddModelError(error.Key, error.Value);
         }
     }
 }

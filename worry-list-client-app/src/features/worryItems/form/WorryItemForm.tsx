@@ -12,7 +12,7 @@ import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
 import { thinkingStyles } from "../../../app/common/constants/ThinkingStyles";
 import { anxietyLevels } from "../../../app/common/constants/AnxietyLevels";
-import { WorryItem } from "../../../app/layout/models/worryItem";
+import { IWorryItem } from "../../../app/layout/models/worryItem";
 
 const validationSchema = yup.object({
     situation: yup.string().required('The Situation field is required'),
@@ -49,7 +49,7 @@ export default observer(function WorryItemForm() {
         actions: '',
     });
 
-    function handleFormSubmit(worryItem: WorryItem) {
+    function handleFormSubmit(worryItem: IWorryItem) {
         if (worryItem.id.length === 0) {
             let newWorryItem = {
                 ...worryItem,

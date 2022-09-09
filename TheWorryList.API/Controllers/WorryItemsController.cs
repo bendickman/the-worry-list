@@ -4,6 +4,8 @@ using TheWorryList.Domain;
 
 namespace TheWorryList.API.Controllers
 {
+    [Route("api/my-worry-items")]
+    [AllowAnonymous]
     public class WorryItemsController : BaseApiController
     {
         [HttpDelete("{id}")]

@@ -6,7 +6,7 @@ namespace TheWorryList.Domain.Identity.Dtos
 
         public string Token { get; set; }
 
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         public string ProfileImage { get; set; }
     }

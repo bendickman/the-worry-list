@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
-import { WorryItem } from '../layout/models/worryItem';
+import { IWorryItem } from '../layout/models/worryItem';
 import { store } from '../stores/store';
+import { IUser, IUserFormValues } from '../layout/models/user';
 
 //fake slow server
 const sleep = (delay: number) => {
@@ -10,6 +11,16 @@ const sleep = (delay: number) => {
         setTimeout(resolve, delay);
     })
 };
+
+axios.defaults.baseURL = 'http://localhost:5000/api';
+
+axios.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if (token) {
+        config.headers!.Authorization = `Bearer ${token}`;        
+    }
+    return config;
+})
 
 axios.interceptors.response.use(async response => {
     await sleep(2000);
@@ -51,8 +62,6 @@ axios.interceptors.response.use(async response => {
     return Promise.reject(error);
 })
 
-axios.defaults.baseURL = 'http://localhost:5000/api';
-
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
@@ -62,16 +71,23 @@ const requests = {
     del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
+const User = {
+    current: (): Promise<IUser> => requests.get('/user'),
+    login: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/login`, user),
+    register: (user: IUserFormValues): Promise<IUser> => requests.post(`/user/register`, user)
+  };
+
 const WorryItems = {
-    list: <T>() => requests.get<WorryItem[]>('/worryitems'),
-    details: (id: string) => requests.get<WorryItem>(`/worryitems/${id}`),
-    create: (worryItem: WorryItem) => requests.post<void>('/worryitems', worryItem),
-    update: (worryItem: WorryItem) => requests.put<void>(`/worryitems/${worryItem.id}`, worryItem),
-    delete: (id: string) => requests.del<void>(`/worryitems/${id}`),
+    list: <T>() => requests.get<IWorryItem[]>('/my-worry-items'),
+    details: (id: string) => requests.get<IWorryItem>(`/my-worry-items/${id}`),
+    create: (worryItem: IWorryItem) => requests.post<void>('/my-worry-items', worryItem),
+    update: (worryItem: IWorryItem) => requests.put<void>(`/my-worry-items/${worryItem.id}`, worryItem),
+    delete: (id: string) => requests.del<void>(`/my-worry-items/${id}`),
 };
 
 const agent = {
-    WorryItems
+    WorryItems,
+    User,
 };
 
 export default agent;

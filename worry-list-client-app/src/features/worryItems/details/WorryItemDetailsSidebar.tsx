@@ -2,10 +2,10 @@ import React from 'react'
 import { Segment, List, Label, Item, Image, ItemMeta } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import { WorryItem } from '../../../app/layout/models/worryItem';
+import { IWorryItem } from '../../../app/layout/models/worryItem';
 
 interface Props {
-    worryItem: WorryItem;
+    worryItem: IWorryItem;
 }
 
 export default observer(function WorryItemDetailsSidebar ({worryItem}: Props) {

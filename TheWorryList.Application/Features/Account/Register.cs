@@ -48,10 +48,13 @@ namespace TheWorryList.Application.Features.Account
 
             public async Task<Result<UserDto>> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (await _userManager.Users.AnyAsync(u => u.Email == request.Email) ||
-                    await _userManager.Users.AnyAsync(u => u.UserName == request.UserName))
+                if (await _userManager.Users.AnyAsync(u => u.Email == request.Email))
                 {
-                    return Result<UserDto>.Failure("Error registering user");
+                    return Result<UserDto>.Failure("email", "This email is taken");
+                }
+                if (await _userManager.Users.AnyAsync(u => u.UserName == request.UserName))
+                {
+                    return Result<UserDto>.Failure("username", "This username is taken");
                 }
 
                 var user = new AppUser
@@ -65,7 +68,7 @@ namespace TheWorryList.Application.Features.Account
 
                 if (!result.Succeeded)
                 {
-                    return Result<UserDto>.Failure("Error registering user");
+                    return Result<UserDto>.Failure("account", "Error registering user");
                 }
 
                 var token = await _mediator.Send(new Token.Query { AppUser = user });
@@ -73,8 +76,8 @@ namespace TheWorryList.Application.Features.Account
                 var userDto = new UserDto
                 {
                     DisplayName = user.DisplayName,
-                    ProfileImage = "",
-                    Username = user.UserName,
+                    ProfileImage = null,
+                    UserName = user.UserName,
                     Token = token,
                 };
 

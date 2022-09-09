@@ -1,4 +1,4 @@
-export interface WorryItem {
+export interface IWorryItem {
     id: string;
     createdDate: Date;
     modifiedDate: Date;

@@ -45,7 +45,7 @@ namespace TheWorryList.Application.Features.Account
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
 
-                if (user is null) return Result<UserDto>.Failure("Unauthorised");
+                if (user is null) return Result<UserDto>.Failure("account", "Unauthorised", isUnauthorised: true);
 
                 var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
@@ -56,15 +56,15 @@ namespace TheWorryList.Application.Features.Account
                     var userDto = new UserDto
                     {
                         DisplayName = user.DisplayName,
-                        Username = user.UserName,
+                        UserName = user.UserName,
                         Token = token,
-                        ProfileImage = "to be implemented",
+                        ProfileImage = null,
                     };
 
                     return Result<UserDto>.Success(userDto);
                 }
 
-                return Result<UserDto>.Failure("Unauthorised");
+                return Result<UserDto>.Failure("account", "Unauthorised", isUnauthorised: true);
             }
         }
     }

@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace TheWorryList.API.Controllers
 {
-    public class AccountController : BaseApiController
+    [Route("api/user")]
+    public class UserController : BaseApiController
     {
 
         [HttpPost("login")]

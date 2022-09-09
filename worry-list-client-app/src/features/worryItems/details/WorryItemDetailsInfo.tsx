@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
 import {Segment, Grid, Icon} from 'semantic-ui-react'
-import { WorryItem } from '../../../app/layout/models/worryItem';
+import { IWorryItem } from '../../../app/layout/models/worryItem';
 
 interface Props {
-    worryItem: WorryItem;
+    worryItem: IWorryItem;
 }
 
 export default observer(function ActivityDetailedInfo({worryItem}: Props) {

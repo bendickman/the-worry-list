@@ -45,7 +45,7 @@ namespace TheWorryList.Application.Features.WorryItems
 
                 var result = await _context.SaveChangesAsync() > 0;
 
-                if (!result) return Result<Unit>.Failure("Failed to update worry item");
+                if (!result) return Result<Unit>.Failure("Worry Item", "Failed to update worry item");
 
                 return Result<Unit>.Success(Unit.Value);
             }

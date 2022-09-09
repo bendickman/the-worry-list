@@ -1,10 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import agent from "../api/agent";
-import { WorryItem } from "../layout/models/worryItem";
+import { IWorryItem } from "../layout/models/worryItem";
 
 export default class WorryItemStore {
-    worryItemsRegistry = new Map<string, WorryItem>();
-    selectedWorryItem: WorryItem | undefined = undefined;
+    worryItemsRegistry = new Map<string, IWorryItem>();
+    selectedWorryItem: IWorryItem | undefined = undefined;
     editMode = false;
     loading = false;
     loadingInitial = false;
@@ -25,7 +25,7 @@ export default class WorryItemStore {
                 const date =  new Date(worryItem.createdDate).toDateString();
                 worryItems[date] = worryItems[date] ? [...worryItems[date], worryItem] : [worryItem];
                 return worryItems;
-            }, {} as {[key: string] : WorryItem[]})
+            }, {} as {[key: string] : IWorryItem[]})
         )
     }
 
@@ -55,7 +55,7 @@ export default class WorryItemStore {
         this.editMode = state;
     }
 
-    createWorryItem = async (worryItem: WorryItem) => {
+    createWorryItem = async (worryItem: IWorryItem) => {
         this.setLoading(true);
 
         try {
@@ -74,7 +74,7 @@ export default class WorryItemStore {
         }
     }
 
-    updateWorryItem = async (worryItem: WorryItem) => {
+    updateWorryItem = async (worryItem: IWorryItem) => {
         this.setLoading(true);
 
         try {
@@ -137,7 +137,7 @@ export default class WorryItemStore {
         return this.worryItemsRegistry.get(id);
     }
 
-    private setWorryItem = (worryItem: WorryItem) => {
+    private setWorryItem = (worryItem: IWorryItem) => {
         //TODO - ensure the createdDate is set correctly, this logic should be removed
         //if (worryItem.createdDate) {
             //mutating state is mobx is allowed, not in Redux

@@ -1,11 +1,11 @@
 import React, { SyntheticEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, ItemMeta, Label, Segment, SegmentGroup } from "semantic-ui-react";
-import { WorryItem } from "../../../app/layout/models/worryItem";
+import { IWorryItem } from "../../../app/layout/models/worryItem";
 import { useStore } from "../../../app/stores/store";
 
 interface Props {
-    worryItem: WorryItem;
+    worryItem: IWorryItem;
 }
 
 export default function WorryItemListItem({ worryItem }: Props) {

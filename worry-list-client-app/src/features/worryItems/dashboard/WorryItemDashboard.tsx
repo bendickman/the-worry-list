@@ -14,7 +14,7 @@ export default observer(function WorryItemDashboard() {
         if (worryItemsRegistry.size <= 1) loadWorryItems(); 
     }, [worryItemsRegistry.size, loadWorryItems]);
 
-    if (worryItemStore.loadingInitial) return <LoaderComponent content='Loading app...' />
+    if (worryItemStore.loadingInitial) return <LoaderComponent content='Loading worry list...' />
 
     return (
         <Grid>
