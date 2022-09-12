@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TheWorryList.Application.Core;
+using TheWorryList.Application.Interfaces;
 using TheWorryList.Domain;
 using TheWorryList.Persistence;
 
@@ -28,14 +26,22 @@ namespace TheWorryList.Application.Features.WorryItems
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
+        private readonly IUserAccessor _userAccessor;
 
-            public Handler(DataContext context)
+            public Handler(
+                DataContext context,
+                IUserAccessor userAccessor)
             {
+                _userAccessor = userAccessor;
                 _context = context;
             }
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
+                var user = await _context.Users.FirstOrDefaultAsync(u => 
+                    u.UserName == _userAccessor.GetUserName());
+
+                request.WorryItem.AppUser = user;
                 _context.WorryItems.Add(request.WorryItem);
 
                 var result = await _context.SaveChangesAsync() > 0;

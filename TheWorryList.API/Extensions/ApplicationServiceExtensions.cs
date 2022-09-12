@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TheWorryList.Application.Features.WorryItems;
+using TheWorryList.Application.Interfaces;
+using TheWorryList.Infrastructure.Security;
 using TheWorryList.Persistence;
 
 namespace TheWorryList.API.Extensions
@@ -26,6 +28,7 @@ namespace TheWorryList.API.Extensions
 
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(Application.Core.MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             return services;
         }

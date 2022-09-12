@@ -5,16 +5,17 @@ using TheWorryList.Domain;
 namespace TheWorryList.API.Controllers
 {
     [Route("api/my-worry-items")]
-    [AllowAnonymous]
     public class WorryItemsController : BaseApiController
     {
         [HttpDelete("{id}")]
+        [Authorize(Policy = "IsUserWorryItem")]
         public async Task<IActionResult> Delete(Guid id)
         {
             return HandleResult(await Mediator.Send(new Application.Features.WorryItems.Delete.Command{Id = id}));
         }
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "IsUserWorryItem")]
         public async Task<ActionResult> Update(Guid id, WorryItem worryItem)
         {
             worryItem.Id = id;
@@ -27,6 +28,13 @@ namespace TheWorryList.API.Controllers
             return HandleResult(await Mediator.Send(new Application.Features.WorryItems.Create.Command{WorryItem = worryItem}));
         }
 
+        [HttpPost("{id}/complete")]
+        [Authorize(Policy = "IsUserWorryItem")]
+        public async Task<ActionResult> Complete(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new Application.Features.WorryItems.Complete.Request{WorryItemId = id}));
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<WorryItem>>> GetWorryItems()
         {
@@ -34,6 +42,7 @@ namespace TheWorryList.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "IsUserWorryItem")]
         public async Task<IActionResult> GetWorryItem(Guid id)
         {
             return HandleResult(await Mediator.Send(new Application.Features.WorryItems.Details.Query{Id = id}));

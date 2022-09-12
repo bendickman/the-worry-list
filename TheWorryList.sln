@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheWorryList.Domain", "TheW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheWorryList.Persistence", "TheWorryList.Persistence\TheWorryList.Persistence.csproj", "{4A77826B-7912-4996-8E74-4A5D77A53A39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheWorryList.Infrastructure", "TheWorryList.Infrastructure\TheWorryList.Infrastructure.csproj", "{F3076A05-A937-4C9B-A670-A58B2725DAB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{4A77826B-7912-4996-8E74-4A5D77A53A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A77826B-7912-4996-8E74-4A5D77A53A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A77826B-7912-4996-8E74-4A5D77A53A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3076A05-A937-4C9B-A670-A58B2725DAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3076A05-A937-4C9B-A670-A58B2725DAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3076A05-A937-4C9B-A670-A58B2725DAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3076A05-A937-4C9B-A670-A58B2725DAB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

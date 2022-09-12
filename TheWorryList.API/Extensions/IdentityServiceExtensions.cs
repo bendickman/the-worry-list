@@ -1,9 +1,11 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using TheWorryList.Application.Core.Constants;
 using TheWorryList.Domain.Identity;
+using TheWorryList.Infrastructure.Security;
 using TheWorryList.Persistence;
 
 namespace TheWorryList.API.Extensions
@@ -37,6 +39,15 @@ namespace TheWorryList.API.Extensions
                     ValidateAudience = false,
                 };
             });
+
+            services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy("IsUserWorryItem", policy =>
+                {
+                    policy.Requirements.Add(new IsUserWorryItemRequirement());
+                });
+            });
+            services.AddTransient<IAuthorizationHandler, IsUserWorryItemRequirementHandler>();
 
             return services;
         }

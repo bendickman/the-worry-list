@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
 import agent from "../api/agent";
 import { IUser, IUserFormValues } from "../layout/models/user";
+import { IWorryItem } from "../layout/models/worryItem";
 import { store } from "./store";
 
 export default class UserStore {
@@ -41,6 +42,7 @@ export default class UserStore {
 
     logout = () => {
         store.commonStore.setToken(null);
+        store.worryItemStore.worryItemsRegistry = new Map<string, IWorryItem>();
         window.localStorage.removeItem('jwt');
         this.user = null;
         history.push('/');

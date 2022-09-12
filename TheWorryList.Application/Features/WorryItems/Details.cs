@@ -1,36 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 using TheWorryList.Application.Core;
 using TheWorryList.Domain;
 using TheWorryList.Persistence;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheWorryList.Application.Features.WorryItems
 {
     public class Details
     {
-        public class Query : IRequest<Result<WorryItem>>
+        public class Query : IRequest<Result<WorryItemDto>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<WorryItem>>
+        public class Handler : IRequestHandler<Query, Result<WorryItemDto>>
         {
             private readonly DataContext _context;
-            public Handler(DataContext context)
+            private readonly IMapper _mapper;
+
+            public Handler(
+                DataContext context,
+                IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<Result<WorryItem>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<WorryItemDto>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var worryItem = await _context
+                var worryItemDto = await _context
                 .WorryItems
-                .FindAsync(request.Id);
+                .ProjectTo<WorryItemDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(wi => wi.Id == request.Id);
 
-                return Result<WorryItem>.Success(worryItem);
+                return Result<WorryItemDto>.Success(worryItemDto);
             }
         }
 

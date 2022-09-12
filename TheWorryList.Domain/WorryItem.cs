@@ -1,3 +1,5 @@
+using TheWorryList.Domain.Identity;
+
 namespace TheWorryList.Domain
 {
     public class WorryItem
@@ -27,6 +29,8 @@ namespace TheWorryList.Domain
         public string PositiveResponse { get; set; }//I have revised and know my stuff, I am capable of passing but if I dont its not the end of the world.
 
         public string Actions { get; set; }//Ensure the revision work has been completed, put things into perspective.
+
+        public AppUser AppUser { get; set; }
 
         public WorryItem()
         {
