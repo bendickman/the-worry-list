@@ -110,6 +110,23 @@ export default class WorryItemStore {
         }
     }
 
+    completeWorryItemToggle = async () => {
+        this.setLoading(true);
+        try {
+            agent.WorryItems.complete(this.selectedWorryItem!.id);
+            runInAction(() => {
+                this.selectedWorryItem!.isComplete = !this.selectedWorryItem?.isComplete;
+                this.worryItemsRegistry.set(this.selectedWorryItem!.id, this.selectedWorryItem!);
+            })
+        } catch (error) {
+            console.log(error);
+        } finally {
+            runInAction(() => {
+                this.setLoading(false);
+            })
+        }
+    }
+
     loadWorryItem = async (id: string) => {
         let worryItem = this.getWorryItem(id);
 

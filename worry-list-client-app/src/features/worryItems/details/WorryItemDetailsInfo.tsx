@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
-import {Segment, Grid, Icon} from 'semantic-ui-react'
+import {Segment, Grid, Icon, Table, Divider, Header} from 'semantic-ui-react'
 import { IWorryItem } from '../../../app/layout/models/worryItem';
 
 interface Props {
@@ -11,39 +11,33 @@ export default observer(function ActivityDetailedInfo({worryItem}: Props) {
     return (
         <Segment.Group>
             <Segment attached='top'>
-                <Grid>
-                    <Grid.Column width={1}>
-                        <Icon size='large' color='teal' name='info'/>
-                    </Grid.Column>
-                    <Grid.Column width={15}>
-                        <p>beliefs - {worryItem.beliefs}</p>
-                        <p>thoughts - {worryItem.thoughts}</p>
-                        <p>thinking styles - {worryItem.thinkingStyle}</p>
-
-                    </Grid.Column>
-                </Grid>
-            </Segment>
-            {/* <Segment attached>
-                <Grid verticalAlign='middle'>
-                    <Grid.Column width={1}>
-                        <Icon name='calendar' size='large' color='teal'/>
-                    </Grid.Column>
-                    <Grid.Column width={15}>
-            <span>
-              {activity.date}
-            </span>
-                    </Grid.Column>
-                </Grid>
-            </Segment> */}
-            <Segment attached>
-                <Grid verticalAlign='middle'>
-                    <Grid.Column width={1}>
-                        <Icon name='frown' size='large' color='teal'/>
-                    </Grid.Column>
-                    <Grid.Column width={11}>
-                        <span>emotions - {worryItem.emotions}</span>
-                    </Grid.Column>
-                </Grid>
+            <Divider horizontal>
+                <Header as='h4'>
+                    <Icon name='table' />
+                    Details
+                </Header>
+                </Divider>
+                <p>Here is a breakdown of your worry, use these details to work through and hopefully manage the worry in the best way you can.</p>
+                <Table definition>
+                    <Table.Body>
+                        <Table.Row>
+                        <Table.Cell width={2}>Beliefs</Table.Cell>
+                        <Table.Cell>{worryItem.beliefs}</Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                        <Table.Cell>Thoughts</Table.Cell>
+                        <Table.Cell>{worryItem.thoughts}</Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                        <Table.Cell>Thinking Style</Table.Cell>
+                        <Table.Cell>{worryItem.thinkingStyle}</Table.Cell>
+                        </Table.Row>
+                        <Table.Row>
+                        <Table.Cell>Emotions</Table.Cell>
+                        <Table.Cell>{worryItem.emotions}</Table.Cell>
+                        </Table.Row>
+                    </Table.Body>
+                    </Table>
             </Segment>
         </Segment.Group>
     )

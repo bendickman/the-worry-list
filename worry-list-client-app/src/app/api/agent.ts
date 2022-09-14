@@ -83,6 +83,7 @@ const WorryItems = {
     create: (worryItem: IWorryItem) => requests.post<void>('/my-worry-items', worryItem),
     update: (worryItem: IWorryItem) => requests.put<void>(`/my-worry-items/${worryItem.id}`, worryItem),
     delete: (id: string) => requests.del<void>(`/my-worry-items/${id}`),
+    complete: (id: string) => requests.post<void>(`/my-worry-items/${id}/complete`, {}),
 };
 
 const agent = {

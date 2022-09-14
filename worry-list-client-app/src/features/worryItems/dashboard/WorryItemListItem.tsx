@@ -22,6 +22,18 @@ export default function WorryItemListItem({ worryItem }: Props) {
     return (
         <Segment.Group>
             <Segment>
+                {worryItem.isComplete &&
+                    <Label attached='top' 
+                        color='green'
+                        content='Completed - Great Work!' 
+                        style={{textAlign: 'center'}}/>
+                }
+                {!worryItem.isComplete &&
+                    <Label attached='top' 
+                        color='blue'
+                        content='Look at your actions and use your postive responses, you have got this!' 
+                        style={{textAlign: 'center'}}/>
+                }
                 <Item.Group>
                     <Item>
                         <Item.Image size='tiny' circular src='/assets/user.png' />
@@ -48,7 +60,7 @@ export default function WorryItemListItem({ worryItem }: Props) {
                 <Button
                     as={Link}
                     to={`/my-worry-list/${worryItem.id}`}
-                    color='teal'
+                    color='blue'
                     floated='right'
                     content='View'
                 />

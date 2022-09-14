@@ -77,7 +77,7 @@ export default observer(function WorryItemForm() {
 
     return (
         <Segment clearing>
-            <Header content='Worry Item Details' color='teal' />
+            <Header content='Worry Item Details' color='blue' />
             <Formik
                 enableReinitialize
                 validationSchema={validationSchema}

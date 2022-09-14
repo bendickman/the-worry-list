@@ -24,7 +24,7 @@ export default observer (function RegisterForm() {
 
             {({handleSubmit, isSubmitting, errors, isValid, dirty}) => (
                 <Form className='ui form error' onSubmit={handleSubmit} autoComplete='off'>
-                    <Header as='h2' content='Create Account' textAlign='center' color='teal' />
+                    <Header as='h2' content='Create Account' textAlign='center' color='blue' />
                     <TextInput name='email' placeholder='Email' />
                     <TextInput name='userName' placeholder='Username' />
                     <TextInput name='displayName' placeholder='Display Name' />

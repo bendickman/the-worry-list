@@ -30,7 +30,6 @@ namespace TheWorryList.Application.Features.WorryItems
             {
                 var worryItem = await _context
                     .WorryItems
-                    .Include(s => s.Actions)
                     .FirstOrDefaultAsync(wi => wi.Id == request.WorryItemId);
 
                 if (worryItem is null) return null;

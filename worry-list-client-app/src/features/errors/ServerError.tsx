@@ -12,7 +12,7 @@ export default observer(function ServerError() {
             <Header as={'h5'} sub color={'red'} content={commonStore.error?.message} />
             {commonStore.error?.stackTrace && 
                 <Segment>
-                    <Header as={'h4'} color={'teal'} content={'Stack Trace'} />
+                    <Header as={'h4'} color={'blue'} content={'Stack Trace'} />
                     <code style={{marginTop: '10px'}}>
                         {commonStore.error.stackTrace}
                     </code>

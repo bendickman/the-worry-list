@@ -21,7 +21,7 @@ export default observer(function WorryItemList() {
             {
                 groupedWorryItems.map(([group, worryItems]) => (
                     <Fragment key={group}>
-                        <Header sub color='teal'>
+                        <Header sub color='blue'>
                             {group}
                         </Header>
                         {worryItems.map(worryItem => (

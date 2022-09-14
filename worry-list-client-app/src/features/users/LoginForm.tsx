@@ -16,7 +16,7 @@ export default observer (function LoginForm() {
 
             {({handleSubmit, isSubmitting, errors}) => (
                 <Form className='ui form' onSubmit={handleSubmit} autoComplete='off'>
-                    <Header as='h2' content='Login' textAlign='center' color='teal' />
+                    <Header as='h2' content='Login' textAlign='center' color='blue' />
                     <TextInput name='email' placeholder='Email' />
                     <TextInput name='password' placeholder='Password' type='password' />
                     <ErrorMessage
