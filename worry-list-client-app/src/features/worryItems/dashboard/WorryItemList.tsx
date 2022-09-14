@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { Fragment } from "react";
-import { Header, Item, Label, Message, Segment } from "semantic-ui-react";
+import { Card, Header, Item, Label, Message, Segment } from "semantic-ui-react";
 import { useStore } from "../../../app/stores/store";
 import WorryItemListItem from "./WorryItemListItem";
 
@@ -12,7 +12,7 @@ export default observer(function WorryItemList() {
     return (
         <Fragment>
             {
-                !groupedWorryItems.length && 
+                !groupedWorryItems.length &&
                 <Message info>
                     <Message.Header>You do not have any worry items yet</Message.Header>
                     <p>Click the 'Add Worry' button above to get started.</p>
@@ -21,12 +21,14 @@ export default observer(function WorryItemList() {
             {
                 groupedWorryItems.map(([group, worryItems]) => (
                     <Fragment key={group}>
-                        <Header sub color='blue'>
+                        <Header color='blue'>
                             {group}
                         </Header>
-                        {worryItems.map(worryItem => (
-                            <WorryItemListItem key={worryItem.id} worryItem={worryItem} />
-                        ))}
+                        <Card.Group>
+                            {worryItems.map(worryItem => (
+                                <WorryItemListItem key={worryItem.id} worryItem={worryItem} />
+                            ))}
+                        </Card.Group>
                     </Fragment>
 
                 ))}
