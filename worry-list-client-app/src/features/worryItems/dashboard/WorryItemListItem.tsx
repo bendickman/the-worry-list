@@ -52,8 +52,11 @@ export default function WorryItemListItem({ worryItem }: Props) {
                         content='View'
                         basic
                     />
-                    <Button basic color='red'>
-                        Delete
+                    <Button
+                        onClick={() => worryItemStore.deleteWorryItem(worryItem.id)} 
+                        basic 
+                        color='red'
+                        content='Delete'>
                     </Button>
                 </div>
             </Card.Content>
