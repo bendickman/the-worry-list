@@ -15,6 +15,7 @@ import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoaderComponent from './LoaderComponent';
 import ModalContainer from '../common/modals/ModalContainer';
+import Profile from '../../features/users/Profile';
 
 function App() {
   const {userStore, commonStore} = useStore();
@@ -47,9 +48,10 @@ function App() {
                 <Route exact path='/my-worry-list' component={WorryItemDashboard} />
                 <Route path='/my-worry-list/:id' component={WorryItemDetails} />
                 <Route key={location.key} exact path={['/create', '/manage/:id']} component={WorryItemForm} />
-                <Route path={'/errors'} component={TestError} />
-                <Route path={'/server-error'} component={ServerError} />
-                <Route path={'/login'} component={LoginForm} />
+                <Route exact path={'/profile'} component={Profile} />
+                <Route exact path={'/errors'} component={TestError} />
+                <Route exact path={'/server-error'} component={ServerError} />
+                <Route exact path={'/login'} component={LoginForm} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
