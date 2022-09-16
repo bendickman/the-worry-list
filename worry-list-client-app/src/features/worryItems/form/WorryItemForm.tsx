@@ -12,7 +12,7 @@ import TextArea from "../../../app/common/form/TextArea";
 import SelectInput from "../../../app/common/form/SelectInput";
 import { thinkingStyles } from "../../../app/common/constants/ThinkingStyles";
 import { anxietyLevels } from "../../../app/common/constants/AnxietyLevels";
-import { IWorryItem } from "../../../app/layout/models/worryItem";
+import { IWorryItem } from "../../../app/models/worryItem";
 
 const validationSchema = yup.object({
     situation: yup.string().required('The Situation field is required'),

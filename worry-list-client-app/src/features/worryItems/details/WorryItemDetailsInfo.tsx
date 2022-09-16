@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react'
 import {Segment, Grid, Icon, Table, Divider, Header} from 'semantic-ui-react'
-import { IWorryItem } from '../../../app/layout/models/worryItem';
+import { IWorryItem } from '../../../app/models/worryItem';
 
 interface Props {
     worryItem: IWorryItem;

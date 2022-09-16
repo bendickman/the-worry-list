@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TheWorryList.Application.Core;
+using TheWorryList.Application.Features.WorryItems;
 using TheWorryList.Domain;
 
 namespace TheWorryList.API.Controllers
@@ -36,9 +38,11 @@ namespace TheWorryList.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WorryItem>>> GetWorryItems()
+        public async Task<ActionResult<IEnumerable<WorryItem>>> GetWorryItems(
+            [FromQuery]WorryItemParams worryItemParams
+        )
         {
-            return HandleResult(await Mediator.Send(new Application.Features.WorryItems.List.Query()));
+            return HandlePagedResult(await Mediator.Send(new Application.Features.WorryItems.List.Query{ WorryItemParams = worryItemParams}));
         }
 
         [HttpGet("{id}")]

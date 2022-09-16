@@ -1,8 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { history } from "../..";
 import agent from "../api/agent";
-import { IUser, IUserFormValues } from "../layout/models/user";
-import { IWorryItem } from "../layout/models/worryItem";
+import { IUser, IUserFormValues } from "../models/user";
+import { IWorryItem } from "../models/worryItem";
 import { store } from "./store";
 
 export default class UserStore {

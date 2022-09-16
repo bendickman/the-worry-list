@@ -13,9 +13,12 @@ namespace TheWorryList.Application.Features.WorryItems
     public class List
     {
 
-        public class Query : IRequest<Result<IEnumerable<WorryItemDto>>>{}
+        public class Query : IRequest<Result<PagedList<WorryItemDto>>>
+        {
+            public WorryItemParams WorryItemParams { get; set; }
+        }
 
-        public class Handler : IRequestHandler<Query, Result<IEnumerable<WorryItemDto>>>
+        public class Handler : IRequestHandler<Query, Result<PagedList<WorryItemDto>>>
         {
             private readonly DataContext _dbContext;
             private readonly IMapper _mapper;
@@ -31,17 +34,30 @@ namespace TheWorryList.Application.Features.WorryItems
                 _httpContext = httpContextAccessor;
             }
 
-            public async Task<Result<IEnumerable<WorryItemDto>>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<PagedList<WorryItemDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var  currentUserName = _httpContext.HttpContext?.User.FindFirstValue(ClaimTypes.Name);
 
-                var worryItemsDto = await _dbContext
+                var query = _dbContext
                     .WorryItems
+                    .Where(wi => wi.CreatedDate > request.WorryItemParams.StartDate)
+                    .OrderByDescending(wi => wi.ModifiedDate)
                     .ProjectTo<WorryItemDto>(_mapper.ConfigurationProvider)
                     .Where(wi => wi.User.UserName == currentUserName)
-                    .ToListAsync();
+                    .AsQueryable();
 
-                return Result<IEnumerable<WorryItemDto>>.Success(worryItemsDto);
+                if (request.WorryItemParams.IsComplete.HasValue)
+                {
+                    query = query
+                        .Where(wi => wi.IsComplete == request.WorryItemParams.IsComplete);
+                }
+
+                return Result<PagedList<WorryItemDto>>.Success(
+                    await PagedList<WorryItemDto>.CreateAsync(
+                        query, 
+                        request.WorryItemParams.PageSize, 
+                        request.WorryItemParams.PageNumber)
+                );
             }
         }
     }

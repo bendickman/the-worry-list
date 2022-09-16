@@ -1,5 +1,5 @@
 import { makeAutoObservable, reaction } from "mobx";
-import { IServerError } from "../layout/models/serverError";
+import { IServerError } from "../models/serverError";
 
 export default class CommonStore {
     error: IServerError | null = null;

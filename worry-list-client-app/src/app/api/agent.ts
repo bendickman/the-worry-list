@@ -1,9 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
-import { IWorryItem } from '../layout/models/worryItem';
+import { IWorryItem } from '../models/worryItem';
 import { store } from '../stores/store';
-import { IUser, IUserFormValues } from '../layout/models/user';
+import { IUser, IUserFormValues } from '../models/user';
+import { PaginatedResults } from '../models/pagination';
 
 //fake slow server
 const sleep = (delay: number) => {
@@ -23,7 +24,14 @@ axios.interceptors.request.use(config => {
 })
 
 axios.interceptors.response.use(async response => {
-    await sleep(2000);
+    await sleep(1000);
+
+    const pagination = response.headers["pagination"];
+    if (pagination) {
+        response.data = new PaginatedResults(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResults<any>>;
+    }
+
     return response;
 }, (error: AxiosError) => {
     const { data, status, config }: { data: any; status: number, config: any } = error.response!;
@@ -78,7 +86,8 @@ const User = {
   };
 
 const WorryItems = {
-    list: <T>() => requests.get<IWorryItem[]>('/my-worry-items'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResults<IWorryItem[]>>('/my-worry-items', {params})
+        .then(responseBody),
     details: (id: string) => requests.get<IWorryItem>(`/my-worry-items/${id}`),
     create: (worryItem: IWorryItem) => requests.post<void>('/my-worry-items', worryItem),
     update: (worryItem: IWorryItem) => requests.put<void>(`/my-worry-items/${worryItem.id}`, worryItem),

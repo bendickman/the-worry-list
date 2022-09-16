@@ -21,7 +21,7 @@ export default observer(function WorryItemList() {
             {
                 groupedWorryItems.map(([group, worryItems]) => (
                     <Fragment key={group}>
-                        <Header color='blue'>
+                        <Header color='blue' size='small'>
                             {group}
                         </Header>
                         <Card.Group>
