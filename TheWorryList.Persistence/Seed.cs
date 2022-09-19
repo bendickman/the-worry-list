@@ -12,9 +12,10 @@ namespace TheWorryList.Persistence
     {
         public static async Task SeedData(DataContext dataContext, UserManager<AppUser> userManager)
         {
-            if (!userManager.Users.Any() && !dataContext.WorryItems.Any())
+            var users = new List<AppUser>();
+            if (!userManager.Users.Any())
             {
-                var users = new List<AppUser>
+                users = new List<AppUser>
                 {
                     new AppUser { DisplayName = "Ben", UserName = "ben", Email = "ben@test.com"},
                     new AppUser { DisplayName = "Rob", UserName = "rob", Email = "rob@test.com"},
@@ -26,6 +27,14 @@ namespace TheWorryList.Persistence
                     await userManager.CreateAsync(user, "P@ssword1");
                 }
 
+            }
+            else
+            {
+                users = userManager.Users.ToList();
+            }
+
+            if (!dataContext.WorryItems.Any())
+            {
                 var worryItems = new List<WorryItem>
                 {
                     new WorryItem
