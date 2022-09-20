@@ -46,5 +46,45 @@ React 18 client-side application that interacts with the backend Web API
 
 ## API Endpoints
 
-Details to follow
+### User
+
+- User login
+
+*Http POST* `/api/user/login`
+
+- User registration
+
+*HTTP POST* `/api/user/register`
+
+- Get current user
+
+*HTTP GET* `/api/user`
+
+### Worry Items
+
+- Get all worry items
+
+*HTTP GET* `/api/my-worry-items`
+
+- Get worry item
+
+*HTTP GET* `/api/my-worry-items/{id}`
+
+- Add new worry item
+
+*HTTP POST* `/api/my-worry-items`
+
+- Update worry item
+
+*HTTP PUT* `/api/my-worry-items/{id}`
+
+- Delete worry item
+
+*HTTP DELETE* `/api/my-worry-items/{id}`
+
+- Mark worry item as 'complete'
+
+*HTTP POST* `/api/my-worry-items/{id}/complete`
+
+The easiest way to test the API is via the Swagger definition located at `/swagger/index.html`
 
