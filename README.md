@@ -24,7 +24,11 @@ Domain entities used throughout the application
 
 ### TheWorryList.Persistence
 
-Data access including migration and seed data
+Data access including migration and seed data.
+
+In order to run the PostgreSQL database, you need to install docker and run the following command. which will install the required container:
+
+`docker run --name dev -e POSTGRES_USER=youruser -e POSTGRES_PASSWORD=yourpassword -p 5432:5432 -d postgres:latest`
 
 ### TheWorryList.Infrastructure
 
