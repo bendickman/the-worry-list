@@ -13,14 +13,16 @@ namespace TheWorryList.API.Extensions
             this IServiceCollection services,
             IConfiguration config)
         {
-            //move thse to their own class
+
             services.AddDbContext<DataContext>(options =>
             {
+                options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
+                return;
                 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
                 string connStr;
 
-                // Depending on if in development or production, use either Heroku-provided
+                // Depending on if in development or production, use either FlyIO
                 // connection string, or development connection string from env var.
                 if (env == "Development")
                 {
@@ -29,7 +31,7 @@ namespace TheWorryList.API.Extensions
                 }
                 else
                 {
-                    // Use connection string provided at runtime by Heroku.
+                    // Use connection string provided at runtime by FlyIO.
                     var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
                     // Parse connection URL to connection string for Npgsql
@@ -42,12 +44,13 @@ namespace TheWorryList.API.Extensions
                     var pgPass = pgUserPass.Split(":")[1];
                     var pgHost = pgHostPort.Split(":")[0];
                     var pgPort = pgHostPort.Split(":")[1];
+                    var updatedHost = pgHost.Replace("flycast", "internal");
 
-                    connStr = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}; SSL Mode=Require; Trust Server Certificate=true";
+                    connStr = $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb};";
                 }
 
                 // Whether the connection string came from the local development configuration file
-                // or from the environment variable from Heroku, use it to set up your DbContext.
+                // or from the environment variable from FlyIO, use it to set up your DbContext.
                 options.UseNpgsql(connStr);
             });
 

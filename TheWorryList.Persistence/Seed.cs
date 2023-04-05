@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using TheWorryList.Domain;
 using TheWorryList.Domain.Identity;
@@ -24,7 +20,7 @@ namespace TheWorryList.Persistence
 
                 foreach (var user in users)
                 {
-                    await userManager.CreateAsync(user, "P@ssword1");
+                    await userManager.CreateAsync(user, "dMfF1WA7IWXq@");
                 }
 
             }
