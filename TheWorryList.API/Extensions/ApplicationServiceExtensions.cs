@@ -16,8 +16,6 @@ namespace TheWorryList.API.Extensions
 
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseNpgsql(config.GetConnectionString("DefaultConnection"));
-                return;
                 var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
                 string connStr;
