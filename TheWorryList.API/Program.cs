@@ -59,7 +59,7 @@ app.UseXfo(opt => opt.Deny());
 //Self ensures all content loaded from our app is included in the whitelist
 app.UseCsp(opt => opt
     .BlockAllMixedContent() //only load https content
-    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com").CustomSources("https://cdn.jsdelivr.net"))
+    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com", "https://cdn.jsdelivr.net/"))
     .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
     .FormActions(s => s.Self())
     .FrameAncestors(s => s.Self())
