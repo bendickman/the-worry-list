@@ -48,13 +48,39 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Configure the HTTP request pipeline.
 app.UseMiddleware<ExceptionMiddleware>();
 
+//prevent mime sniffing of content type
+app.UseXContentTypeOptions();
+//prevent the browser sharing details of the app when navigating away
+app.UseReferrerPolicy(opt => opt.NoReferrer());
+app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
+//prevent site being loaded in xFrame to stop click jacking
+app.UseXfo(opt => opt.Deny());
+//whitelist 3rd party sources used within our app. 
+//Self ensures all content loaded from our app is included in the whitelist
+app.UseCsp(opt => opt
+    .BlockAllMixedContent() //only load https content
+    .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
+    .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+    .FormActions(s => s.Self())
+    .FrameAncestors(s => s.Self())
+    .ImageSources(s => s.Self())
+    .ScriptSources(s => s.Self())
+);
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+else 
+{
+    app.Use(async (context, next) => 
+    {
+        context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000");
+        await next.Invoke();
+    });
+}
 
-//app.UseHttpsRedirection();
 app.UseRouting();
 app.UseDefaultFiles();
 app.UseStaticFiles();
